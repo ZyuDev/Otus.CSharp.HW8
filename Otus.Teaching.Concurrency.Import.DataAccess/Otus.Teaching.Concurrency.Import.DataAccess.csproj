@@ -5,7 +5,27 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.90" />
+      <PackageReference Include="Npgsql" Version="5.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Otus.Teaching.Concurrency.Import.Core\Otus.Teaching.Concurrency.Import.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="QuerySource.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>QuerySource.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="QuerySource.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>QuerySource.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

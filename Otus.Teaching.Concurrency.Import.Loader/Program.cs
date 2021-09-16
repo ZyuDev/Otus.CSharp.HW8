@@ -10,9 +10,11 @@ namespace Otus.Teaching.Concurrency.Import.Loader
 {
     class Program
     {
+        private static string _connectionString = @"Host = localhost; Port = 5432; Database = CustomersDB; User Id = sa; Password = 1;";
+
         private static string _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "customers");
         private static string _loaderAppPath = @"D:\_WORK\REPO_LEARNING\Otus.CSharp.HW8\Otus.Teaching.Concurrency.Import.DataGenerator.App\bin\Debug\netcoreapp3.1\Otus.Teaching.Concurrency.Import.DataGenerator.App.exe";
-        private static int _itemsCount = 1000;
+        private static int _itemsCount = 10000;
         private static int _regime = 1;
 
         static void Main(string[] args)
@@ -48,7 +50,7 @@ namespace Otus.Teaching.Concurrency.Import.Loader
             }
 
 
-            var loader = new CsvDataLoader(_dataFilePath);
+            var loader = new CsvDataLoader(_dataFilePath, _connectionString);
             loader.LoadData();
         }
 
