@@ -75,9 +75,8 @@ namespace Otus.Teaching.Concurrency.Import.DataAccess {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO public.customers(
-        ///	id, fullname, email, phone)
-        ///	VALUES (@id, @fullname, @email, @phone);.
+        ///   Looks up a localized string similar to INSERT INTO public.customers(fullname, email, phone)
+        ///	VALUES (@fullname, @email, @phone);.
         /// </summary>
         internal static string InsertCustomer {
             get {

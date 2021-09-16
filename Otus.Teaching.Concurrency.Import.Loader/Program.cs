@@ -14,8 +14,9 @@ namespace Otus.Teaching.Concurrency.Import.Loader
 
         private static string _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "customers");
         private static string _loaderAppPath = @"D:\_WORK\REPO_LEARNING\Otus.CSharp.HW8\Otus.Teaching.Concurrency.Import.DataGenerator.App\bin\Debug\netcoreapp3.1\Otus.Teaching.Concurrency.Import.DataGenerator.App.exe";
-        private static int _itemsCount = 10000;
-        private static int _regime = 1;
+        private static int _itemsCount = 100_000;
+        private static int _dataGenerationRegime = 1;
+        private static int _loadRegime = 0;
 
         static void Main(string[] args)
         {
@@ -24,7 +25,7 @@ namespace Otus.Teaching.Concurrency.Import.Loader
                 _dataFilePath = args[0];
             }
 
-            if (_regime == 0)
+            if (_dataGenerationRegime == 0)
             {
 
                 var startInfo = new ProcessStartInfo()
@@ -41,7 +42,7 @@ namespace Otus.Teaching.Concurrency.Import.Loader
 
                 Console.WriteLine("Data generated");
             }
-            else if (_regime == 1)
+            else if (_dataGenerationRegime == 1)
             {
                 Console.WriteLine("Data generation by direct method call.");
                 GenerateCustomersDataFile();
@@ -50,7 +51,7 @@ namespace Otus.Teaching.Concurrency.Import.Loader
             }
 
 
-            var loader = new CsvDataLoader(_dataFilePath, _connectionString);
+            var loader = new CsvDataLoader(_dataFilePath, _connectionString, 4, _loadRegime);
             loader.LoadData();
         }
 

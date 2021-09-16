@@ -126,9 +126,8 @@
 )</value>
   </data>
   <data name="InsertCustomer" xml:space="preserve">
-    <value>INSERT INTO public.customers(
-	id, fullname, email, phone)
-	VALUES (@id, @fullname, @email, @phone);</value>
+    <value>INSERT INTO public.customers(fullname, email, phone)
+	VALUES (@fullname, @email, @phone);</value>
   </data>
   <data name="TableExists" xml:space="preserve">
     <value>SELECT EXISTS (

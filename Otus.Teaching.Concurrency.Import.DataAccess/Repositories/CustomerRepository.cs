@@ -24,7 +24,6 @@ namespace Otus.Teaching.Concurrency.Import.DataAccess.Repositories
         {
             var query = QuerySource.InsertCustomer;
             var parameters = new DynamicParameters();
-            parameters.Add("id", item.Id, DbType.Int32);
             parameters.Add("fullname", item.FullName, DbType.String);
             parameters.Add("email", item.Email, DbType.String);
             parameters.Add("phone", item.Phone, DbType.String);
