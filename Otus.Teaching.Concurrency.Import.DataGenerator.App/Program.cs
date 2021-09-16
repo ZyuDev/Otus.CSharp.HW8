@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Otus.Teaching.Concurrency.Import.Core.Enums;
+using Otus.Teaching.Concurrency.Import.Handler.Data;
+using System;
 using System.IO;
-using XmlDataGenerator = Otus.Teaching.Concurrency.Import.DataGenerator.Generators.XmlGenerator;
+using Otus.Teaching.Concurrency.Import.DataGenerator.Generators;
 
 namespace Otus.Teaching.Concurrency.Import.XmlGenerator
 {
@@ -8,27 +10,43 @@ namespace Otus.Teaching.Concurrency.Import.XmlGenerator
     {
         private static readonly string _dataFileDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private static string _dataFileName; 
-        private static int _dataCount = 100; 
+        private static int _dataCount = 100;
+        private static GeneratorKinds _generatorKind = GeneratorKinds.Csv;
         
         static void Main(string[] args)
         {
             if (!TryValidateAndParseArgs(args))
                 return;
-            
-            Console.WriteLine("Generating xml data...");
 
-            var generator = GeneratorFactory.GetGenerator(_dataFileName, _dataCount);
-            
-            generator.Generate();
-            
-            Console.WriteLine($"Generated xml data in {_dataFileName}...");
+            IDataGenerator generator = null;
+            if(_generatorKind == GeneratorKinds.Csv)
+            {
+                generator = GeneratorFactory.GetCsvGenerator(_dataFileName, _dataCount);
+            }
+            else if (_generatorKind == GeneratorKinds.Xml)
+            {
+                generator = GeneratorFactory.GetXmlGenerator(_dataFileName, _dataCount);
+            }
+            else
+            {
+                Console.WriteLine("Unknown generator kind");
+            }
+
+            if (generator != null)
+            {
+                Console.WriteLine("Generating data...");
+                generator.Generate();
+                Console.WriteLine($"Generated data in {_dataFileName}...");
+            }
+
         }
 
         private static bool TryValidateAndParseArgs(string[] args)
         {
             if (args != null && args.Length > 0)
             {
-                _dataFileName = Path.Combine(_dataFileDirectory, $"{args[0]}.xml");
+                var ext = GetFileExt(_generatorKind);
+                _dataFileName = Path.Combine(_dataFileDirectory, $"{args[0]}.{ext}");
             }
             else
             {
@@ -46,6 +64,20 @@ namespace Otus.Teaching.Concurrency.Import.XmlGenerator
             }
 
             return true;
+        }
+
+        private static string GetFileExt(GeneratorKinds generatorKind)
+        {
+            if (generatorKind == GeneratorKinds.Csv)
+            {
+                return "csv";
+            }
+            else if(generatorKind == GeneratorKinds.Xml)
+            {
+                return "xml";
+            }
+
+            return "txt";
         }
     }
 }

@@ -5,9 +5,9 @@ using Otus.Teaching.Concurrency.Import.Handler.Entities;
 namespace Otus.Teaching.Concurrency.Import.DataAccess.Parsers
 {
     public class XmlParser
-        : IDataParser<List<Customer>>
+        : IDataParser<Customer>
     {
-        public List<Customer> Parse()
+        public IList<Customer> Parse(string content)
         {
             //Parse data
             return new List<Customer>();

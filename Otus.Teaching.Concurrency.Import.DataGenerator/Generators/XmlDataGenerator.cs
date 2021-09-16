@@ -7,12 +7,12 @@ using Otus.Teaching.Concurrency.Import.Handler.Entities;
 
 namespace Otus.Teaching.Concurrency.Import.DataGenerator.Generators
 {
-    public class XmlGenerator : IDataGenerator
+    public class XmlDataGenerator : IDataGenerator
     {
         private readonly string _fileName;
         private readonly int _dataCount;
 
-        public XmlGenerator(string fileName, int dataCount)
+        public XmlDataGenerator(string fileName, int dataCount)
         {
             _fileName = fileName;
             _dataCount = dataCount;
