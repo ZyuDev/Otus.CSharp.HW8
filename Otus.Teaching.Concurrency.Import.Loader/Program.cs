@@ -5,33 +5,33 @@ using System.Reflection;
 using Otus.Teaching.Concurrency.Import.Core.Loaders;
 using Otus.Teaching.Concurrency.Import.DataGenerator.Generators;
 using Otus.Teaching.Concurrency.Import.Loader.Loaders;
+using IniParser;
+using IniParser.Model;
+using Otus.Teaching.Concurrency.Import.Loader.Helper;
 
 namespace Otus.Teaching.Concurrency.Import.Loader
 {
     class Program
     {
-        private static string _connectionString = @"Host = localhost; Port = 5432; Database = CustomersDB; User Id = sa; Password = 1;";
-
-        private static string _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "customers");
-        private static string _loaderAppPath = @"D:\_WORK\REPO_LEARNING\Otus.CSharp.HW8\Otus.Teaching.Concurrency.Import.DataGenerator.App\bin\Debug\netcoreapp3.1\Otus.Teaching.Concurrency.Import.DataGenerator.App.exe";
-        private static int _itemsCount = 100_000;
-        private static int _dataGenerationRegime = 1;
-        private static int _loadRegime = 0;
 
         static void Main(string[] args)
         {
-            if (args != null && args.Length == 1)
+
+            var settings = ReadSettings("configuration.ini");
+
+            if (settings == null)
             {
-                _dataFilePath = args[0];
+                Console.WriteLine("Configuration file not found");
+                return;
             }
 
-            if (_dataGenerationRegime == 0)
+            if (settings.DataGenerationRegime == 0)
             {
 
                 var startInfo = new ProcessStartInfo()
                 {
-                    ArgumentList = { _dataFilePath, _itemsCount.ToString() },
-                    FileName = _loaderAppPath
+                    ArgumentList = { settings.DataFilePath, settings.ItemsCount.ToString() },
+                    FileName = settings.LoaderAppPath
                 };
 
                 var processGenerator = Process.Start(startInfo);
@@ -42,23 +42,54 @@ namespace Otus.Teaching.Concurrency.Import.Loader
 
                 Console.WriteLine("Data generated");
             }
-            else if (_dataGenerationRegime == 1)
+            else if (settings.DataGenerationRegime == 1)
             {
                 Console.WriteLine("Data generation by direct method call.");
-                GenerateCustomersDataFile();
+
+                var generator = new CsvDataGenerator($"{settings.DataFilePath}.csv", settings.ItemsCount);
+                generator.Generate();
+
                 Console.WriteLine("Data generated");
 
             }
 
-
-            var loader = new CsvDataLoader(_dataFilePath, _connectionString, 4, _loadRegime);
+            var loader = new CsvDataLoader(settings.DataFilePath, settings.ConnectionString, 4, settings.LoadRegime);
             loader.LoadData();
         }
 
-        static void GenerateCustomersDataFile()
+
+
+        private static AppSettings ReadSettings(string settingsPath)
         {
-            var generator = new CsvDataGenerator($"{_dataFilePath}.csv", _itemsCount);
-            generator.Generate();
+            if (!File.Exists(settingsPath))
+            {
+                return null;
+            }
+
+            var appSettings = new AppSettings();
+
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile(settingsPath);
+            data.ClearAllComments();
+
+            if (int.TryParse(data["Main"]["ItemsCount"], out var itemsCount))
+            {
+                appSettings.ItemsCount = itemsCount;
+            }
+            if (int.TryParse(data["Main"]["LoadRegime"], out var loadRegime))
+            {
+                appSettings.LoadRegime = loadRegime;
+            }
+            if (int.TryParse(data["Main"]["DataGenerationRegime"], out var dataGenerationRegime))
+            {
+                appSettings.DataGenerationRegime = dataGenerationRegime;
+            }
+
+            appSettings.LoaderAppPath = data["Main"]["LoaderAppPath"].Replace("\"","");
+            appSettings.ConnectionString = data["Main"]["ConnectionString"].Replace("\"", "");
+            appSettings.DataFileName = data["Main"]["DataFileName"];
+
+            return appSettings;
         }
     }
 }
