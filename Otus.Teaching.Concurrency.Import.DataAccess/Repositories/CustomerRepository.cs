@@ -20,6 +20,28 @@ namespace Otus.Teaching.Concurrency.Import.DataAccess.Repositories
             _connection = connection;
         }
 
+        public Customer GetCustomer(int id)
+        {
+            var query = "SELECT * FROM public.customers WHERE id = @id";
+            var parameters = new DynamicParameters();
+            parameters.Add("id", id, DbType.Int32);
+
+            var item = _connection.QueryFirstOrDefault<Customer>(query, parameters);
+
+            return item;
+        }
+
+        public Customer GetCustomerByEmail(string email)
+        {
+            var query = "SELECT * FROM public.customers WHERE email = @email";
+            var parameters = new DynamicParameters();
+            parameters.Add("email", email, DbType.String);
+
+            var item = _connection.QueryFirstOrDefault<Customer>(query, parameters);
+
+            return item;
+        }
+
         public void AddCustomer(Customer item)
         {
             var query = QuerySource.InsertCustomer;

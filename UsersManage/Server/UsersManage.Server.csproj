@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.12" />
+    <PackageReference Include="Npgsql" Version="6.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Otus.Teaching.Concurrency.Import.Core\Otus.Teaching.Concurrency.Import.Core.csproj" />
+    <ProjectReference Include="..\..\Otus.Teaching.Concurrency.Import.DataAccess\Otus.Teaching.Concurrency.Import.DataAccess.csproj" />
+    <ProjectReference Include="..\Client\UsersManage.Client.csproj" />
+    <ProjectReference Include="..\Shared\UsersManage.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,44 @@
+﻿@page "/AddUser"
+
+<div class="row">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <div class="card-header">New User</div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="item-full-name">Full name</label>
+                    <BbTextInput Id="item-full-name" HtmlClass="form-control form-control-sm" @bind-Value="_item.FullName"></BbTextInput>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-email">Email</label>
+                    <BbTextInput Id="item-email" HtmlClass="form-control form-control-sm" @bind-Value="_item.Email"></BbTextInput>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-phone">Phone</label>
+                    <BbTextInput Id="item-phone" HtmlClass="form-control form-control-sm" @bind-Value="_item.Phone"></BbTextInput>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-outline-primary" @onclick="OnAddClick">
+                    @if (_isWaiting)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                    <span>Add</span>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<BbAlertHub></BbAlertHub>
